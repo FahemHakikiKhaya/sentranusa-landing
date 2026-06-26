@@ -532,8 +532,9 @@
                   line-height: 1.6;
                 "
               >
-                A patient sequence &mdash; from organizational core, through MDL
-                Indonesia, to a defining seat in MPL ID and beyond.
+                A patient sequence — from organizational foundation, through
+                competitive entry, to a defining seat in franchised play and
+                beyond.
               </div>
             </div>
             <div class="sng-rule" style="margin-bottom: 64px"></div>
@@ -631,11 +632,11 @@
             >
               From seventeen thousand
               <em style="font-style: italic; color: #c9a84c; font-weight: 400">
-                islands
+                islands,
               </em>
-              ,
+
               <br />
-              a single mark.
+              in a single mark.
             </h2>
             <p
               class="sng-reveal sng-arch-body"
@@ -826,22 +827,94 @@
               style="margin: 80px auto; max-width: 120px"
             ></div>
             <div
-              class="sng-reveal"
-              style="display: flex; justify-content: center"
+              class="sng-reveal sng-form-wrap"
+              style="position: relative; max-width: 680px; margin: 0 auto"
             >
-              <button class="sng-cta" type="button">
-                <span> Become a Founding Partner </span>
-                <span style="font-size: 14px; letter-spacing: 0"> &rarr; </span>
-                <svg preserveaspectratio="none">
-                  <rect
-                    height="100%"
-                    style="width: calc(100% - 1px); height: calc(100% - 1px)"
-                    width="100%"
-                    x="0.5"
-                    y="0.5"
-                  ></rect>
-                </svg>
-              </button>
+              <div
+                aria-hidden="true"
+                class="sng-form-corner sng-form-corner-tl"
+              ></div>
+              <div
+                aria-hidden="true"
+                class="sng-form-corner sng-form-corner-tr"
+              ></div>
+              <div
+                aria-hidden="true"
+                class="sng-form-corner sng-form-corner-bl"
+              ></div>
+              <div
+                aria-hidden="true"
+                class="sng-form-corner sng-form-corner-br"
+              ></div>
+              <div class="sng-form-eyebrow">Become a Partner</div>
+              <form class="sng-form" data-sng-form novalidate>
+                <div class="sng-field">
+                  <label class="sng-label" for="cf-name">Name</label>
+                  <input
+                    class="sng-input"
+                    id="cf-name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    required
+                  />
+                </div>
+                <div class="sng-field">
+                  <label class="sng-label" for="cf-email">Email</label>
+                  <input
+                    class="sng-input"
+                    id="cf-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
+                <div class="sng-field sng-field-full">
+                  <label class="sng-label" for="cf-org">
+                    Organization
+                    <span class="sng-label-opt">Optional</span>
+                  </label>
+                  <input
+                    class="sng-input"
+                    id="cf-org"
+                    name="organization"
+                    type="text"
+                    autocomplete="organization"
+                  />
+                </div>
+                <div class="sng-field sng-field-full">
+                  <label class="sng-label" for="cf-message">Your Inquiry</label>
+                  <textarea
+                    class="sng-input sng-textarea"
+                    id="cf-message"
+                    name="message"
+                    rows="4"
+                    required
+                  ></textarea>
+                </div>
+                <div class="sng-form-action sng-field-full">
+                  <button class="sng-cta" type="submit">
+                    <span>Send Inquiry</span>
+                    <span style="font-size: 14px; letter-spacing: 0"
+                      >&rarr;</span
+                    >
+                    <svg preserveaspectratio="none">
+                      <rect
+                        height="100%"
+                        style="
+                          width: calc(100% - 1px);
+                          height: calc(100% - 1px);
+                        "
+                        width="100%"
+                        x="0.5"
+                        y="0.5"
+                      ></rect>
+                    </svg>
+                  </button>
+                </div>
+                <div class="sng-form-status" data-sng-form-status></div>
+              </form>
             </div>
           </div>
         </section>
@@ -926,11 +999,80 @@
           let t = 0;
           this._iv = setInterval(() => { check(); if (++t > 20) { clearInterval(this._iv); this._iv = null; } }, 150);
           check();
+
+          // Contact form — compose mailto on submit. Delegated so it survives re-renders.
+          // Replace CONTACT_EMAIL when a real inbox is ready, or swap this handler for a
+          // POST to Formspree / your backend.
+          const CONTACT_EMAIL = 'partners@sentranusa.id';
+          const onSubmit = (e) => {
+            const form = e.target.closest('form[data-sng-form]');
+            if (!form) return;
+            e.preventDefault();
+            const status = form.querySelector('[data-sng-form-status]');
+            const setStatus = (msg, kind) => {
+              if (!status) return;
+              status.textContent = msg;
+              status.classList.remove('is-error', 'is-success');
+              if (kind) status.classList.add('is-' + kind);
+            };
+            const data = new FormData(form);
+            const name = (data.get('name') || '').toString().trim();
+            const email = (data.get('email') || '').toString().trim();
+            const org = (data.get('organization') || '').toString().trim();
+            const msg = (data.get('message') || '').toString().trim();
+            const required = { name, email, message: msg };
+            let firstInvalid = null;
+            for (const [k, v] of Object.entries(required)) {
+              const input = form.querySelector('[name="' + k + '"]');
+              if (!v) {
+                input && input.classList.add('is-invalid');
+                if (!firstInvalid) firstInvalid = input;
+              } else {
+                input && input.classList.remove('is-invalid');
+              }
+            }
+            const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if (!emailOk) {
+              const ei = form.querySelector('[name="email"]');
+              ei && ei.classList.add('is-invalid');
+              if (!firstInvalid) firstInvalid = ei;
+            }
+            if (firstInvalid) {
+              setStatus('Please complete the required fields.', 'error');
+              firstInvalid.focus();
+              return;
+            }
+            const subject = 'Partner Inquiry — ' + name;
+            const body =
+              'Name: ' + name + '\n' +
+              'Email: ' + email + '\n' +
+              'Organization: ' + (org || '—') + '\n\n' +
+              'Inquiry:\n' + msg + '\n';
+            const href = 'mailto:' + CONTACT_EMAIL +
+              '?subject=' + encodeURIComponent(subject) +
+              '&body=' + encodeURIComponent(body);
+            setStatus('Opening your mail client…', 'success');
+            window.location.href = href;
+          };
+          document.addEventListener('submit', onSubmit);
+          this._onSubmit = onSubmit;
+
+          // Clear invalid state as soon as the user edits the field.
+          const onInput = (e) => {
+            const t = e.target;
+            if (t && t.classList && t.classList.contains('sng-input')) {
+              t.classList.remove('is-invalid');
+            }
+          };
+          document.addEventListener('input', onInput);
+          this._onInput = onInput;
         }
         componentWillUnmount() {
           if (this._scrollers) this._scrollers.forEach(s => s.removeEventListener('scroll', this._check));
           window.removeEventListener('resize', this._check);
           if (this._iv) clearInterval(this._iv);
+          if (this._onSubmit) document.removeEventListener('submit', this._onSubmit);
+          if (this._onInput) document.removeEventListener('input', this._onInput);
         }
 
         renderVals() {
@@ -954,10 +1096,10 @@
           });
 
           const pillars = [
-            { num: '01', name: 'Establish', body: 'Build the organizational core — management, player pipeline and brand infrastructure engineered for the long arc.' },
-            { num: '02', name: 'Compete',   body: 'Enter the ecosystem through MDL Indonesia and grassroots tournaments — earning every meter of ground on merit.' },
-            { num: '03', name: 'Partner',   body: 'Align with commercial partners and MOONTON to secure a defining franchise seat inside MPL Indonesia.' },
-            { num: '04', name: 'Scale',     body: 'Expand across titles, content and community into a defining Indonesian esports institution.' }
+            { num: '01', name: 'Establish', body: 'Build the organizational core — management, player pipeline, and brand infrastructure engineered for the long arc.' },
+            { num: '02', name: 'Compete',   body: 'Enter the competitive ecosystem at every level — earning ground through open qualifiers, regional circuits, and structured league environments.' },
+            { num: '03', name: 'Partner',   body: 'Build the commercial and institutional relationships that position the organization for franchised competition at the highest level of professional play.' },
+            { num: '04', name: 'Scale',     body: 'Expand across titles, content, and community — building a self-sustaining institution at the center of Indonesian and regional esports.' }
           ];
 
           const pillarCards = pillars.map((p, i) => React.createElement('div', {

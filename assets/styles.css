@@ -53,6 +53,30 @@
   .sng-nav-link { color: rgba(245,240,232,0.62); text-decoration: none; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; transition: color .3s ease; }
   .sng-nav-link:hover { color: #C9A84C; }
 
+  /* ---- Contact form ---- */
+  .sng-form-wrap { padding: 56px 56px 52px; text-align: left; }
+  .sng-form-corner { position: absolute; width: 22px; height: 22px; pointer-events: none; }
+  .sng-form-corner-tl { top: 0; left: 0; border-top: 1px solid rgba(201,168,76,0.5); border-left: 1px solid rgba(201,168,76,0.5); }
+  .sng-form-corner-tr { top: 0; right: 0; border-top: 1px solid rgba(201,168,76,0.5); border-right: 1px solid rgba(201,168,76,0.5); }
+  .sng-form-corner-bl { bottom: 0; left: 0; border-bottom: 1px solid rgba(201,168,76,0.5); border-left: 1px solid rgba(201,168,76,0.5); }
+  .sng-form-corner-br { bottom: 0; right: 0; border-bottom: 1px solid rgba(201,168,76,0.5); border-right: 1px solid rgba(201,168,76,0.5); }
+  .sng-form-eyebrow { font-family: 'Manrope', sans-serif; font-size: 10px; letter-spacing: 0.42em; color: #C9A84C; text-transform: uppercase; text-align: center; margin-bottom: 40px; }
+  .sng-form { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 36px; }
+  .sng-field { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .sng-field-full { grid-column: 1 / -1; }
+  .sng-label { font-family: 'Manrope', sans-serif; font-size: 10px; letter-spacing: 0.36em; color: rgba(245,240,232,0.58); text-transform: uppercase; display: flex; align-items: baseline; gap: 10px; }
+  .sng-label-opt { font-size: 9px; letter-spacing: 0.24em; color: rgba(245,240,232,0.32); }
+  .sng-input { font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 300; letter-spacing: 0.02em; color: #F5F0E8; background: transparent; border: none; border-bottom: 1px solid rgba(245,240,232,0.20); padding: 6px 2px 12px; outline: none; transition: border-color .5s ease; width: 100%; }
+  .sng-input::placeholder { color: rgba(245,240,232,0.24); }
+  .sng-input:focus { border-bottom-color: #C9A84C; }
+  .sng-input:focus + .sng-input-rule, .sng-input:focus ~ .sng-input-rule { transform: scaleX(1); }
+  .sng-textarea { resize: vertical; min-height: 120px; line-height: 1.65; }
+  .sng-form-action { margin-top: 16px; display: flex; justify-content: center; }
+  .sng-form-status { grid-column: 1 / -1; text-align: center; font-family: 'Manrope', sans-serif; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(245,240,232,0.55); min-height: 14px; transition: color .4s ease; }
+  .sng-form-status.is-error { color: #d97a6b; }
+  .sng-form-status.is-success { color: #C9A84C; }
+  .sng-input:user-invalid, .sng-input.is-invalid { border-bottom-color: rgba(217,122,107,0.7); }
+
   /* ---- Mobile (≤780px) ---- */
   @media (max-width: 780px) {
     .sng-nav { padding: 18px 20px !important; }
@@ -92,6 +116,11 @@
     .sng-footer-meta { font-size: 9px !important; letter-spacing: 0.28em !important; }
 
     .sng-cta { padding: 18px 32px !important; font-size: 11px !important; letter-spacing: 0.28em !important; }
+
+    .sng-form-wrap { padding: 36px 26px 36px !important; }
+    .sng-form { grid-template-columns: 1fr !important; gap: 24px !important; }
+    .sng-form-eyebrow { font-size: 9.5px !important; letter-spacing: 0.36em !important; margin-bottom: 28px !important; }
+    .sng-form-corner { width: 18px !important; height: 18px !important; }
   }
 
   @media (max-width: 420px) {
